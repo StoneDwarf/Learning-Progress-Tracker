@@ -74,7 +74,8 @@ def add_points(students_list, students_data):
                 if any(point < 0 for point in points):
                     print('Incorrect points format')
                     continue
-                elif any(float_pattern.match(element) for element in id_input[1:]):
+            #    elif any(float_pattern.match(element) for element in id_input[1:]):
+                elif any(float_pattern.match(item) for item in student_id[1:]):
                     print('Incorrect points format')
                     continue
                 else:
