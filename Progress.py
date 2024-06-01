@@ -70,7 +70,7 @@ def add_points(students_list, students_data):
             try:
                 new_id = int(id_input[0])
                 points = list(map(int, id_input[1:]))
-                float_pattern = re.compile(r'^-?\d+\.\d+$')
+                float_pattern = re.compile(r'^-?\d+\.\d+')
                 if any(point < 0 for point in points):
                     print('Incorrect points format')
                     continue
@@ -81,6 +81,7 @@ def add_points(students_list, students_data):
                     for index, point in enumerate.students_data[new_id][1]:
                         students_data[new_id][1][index] += points[index]
                     print('Points updated')
+                    continue
   #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
             except:
                 print('Incorrect points format')
@@ -102,8 +103,9 @@ def list_print(students):
     if len(students) == 1:
         print('No students found')
     else:
+        print('Students:')
         for item in students[1:]:
-            print(f'Students:{item}')
+            print(item)
 
 
 students_data = {}
