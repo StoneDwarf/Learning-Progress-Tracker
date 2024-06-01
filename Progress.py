@@ -60,22 +60,30 @@ def add_points(students_list, students_data):
                 print('Incorrect points format')
                 continue
             try:
-                new_id = int(id_input[0])   # <<<<CORRECT!
-                points = list(map(int, id_input[1:]))
+                new_id = int(id_input[0])
                 if new_id not in students_list:
                     print(f'No student is found for id={new_id}')
-                elif any(point < 0 for point in points):
+                    continue
+  #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
+            except:
+                print(f'No student is found for id={id_input[0]}')
+            try:
+                new_id = int(id_input[0])
+                points = list(map(int, id_input[1:]))
+                float_pattern = re.compile(r'^-?\d+\.\d+$')
+                if any(point < 0 for point in points):
                     print('Incorrect points format')
+                    continue
+                elif any(float_pattern.match(element) for element in id_input[1:]):
+                    print('Incorrect points format')
+                    continue
                 else:
                     for index, point in enumerate.students_data[new_id][1]:
                         students_data[new_id][1][index] += points[index]
                     print('Points updated')
   #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
-            except ValueError:
+            except:
                 print('Incorrect points format')
-            except KeyError:
-                print(f'No student is found for id={id_input[0]}')
-
 
 def find_student(students_data):   #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
     print("Enter an id or 'back' to return")
