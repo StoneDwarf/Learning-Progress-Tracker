@@ -70,16 +70,15 @@ def add_points(students_list, students_data):
             try:
                 new_id = int(id_input[0])
                 points = list(map(int, id_input[1:]))
-                float_pattern = re.compile(r'^-?\d+\.\d+')
+                int_pattern = re.compile(r'^-?\d+$')
                 if any(point < 0 for point in points):
                     print('Incorrect points format')
                     continue
-            #    elif any(float_pattern.match(element) for element in id_input[1:]):
-                elif any(float_pattern.match(item) for item in student_id[1:]):
+                elif not all(int_pattern.match(item) for item in id_input[1:]):
                     print('Incorrect points format')
                     continue
                 else:
-                    for index, point in enumerate.students_data[new_id][1]:
+                    for index in range(len(points)):
                         students_data[new_id][1][index] += points[index]
                     print('Points updated')
                     continue
@@ -95,7 +94,7 @@ def find_student(students_data):   #  students_data = {new_id: [[first_name + la
             return
         try:
             id = int(student_id)
-            print(f'id points: Python={students_data[id][1][0]}; DSA={students_data[id][1][1]}; Databases={students_data[id][1][2]}; Flask={students_data[id][1][3]}')
+            print(f'{id} points: Python={students_data[id][1][0]}; DSA={students_data[id][1][1]}; Databases={students_data[id][1][2]}; Flask={students_data[id][1][3]}')
         except:
             print(f'No student is found for id={student_id}')
 
