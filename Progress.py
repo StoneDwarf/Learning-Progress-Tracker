@@ -31,7 +31,7 @@ def name_check(name, the_list, students_list, students_data):
         the_list.append(name)
         new_id = students_list[-1] + 1
         students_list.append(new_id)
-        students_data[new_id] = [[first_name + last_name, email], [0,0,0,0]]
+        students_data[new_id] = [[first_name + last_name, email], [0, 0, 0, 0]]
         print("The student has been added.")
     return the_list, students_list, students_data
 
@@ -64,7 +64,7 @@ def add_points(students_list, students_data):
                 if new_id not in students_list:
                     print(f'No student is found for id={new_id}')
                     continue
-  #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
+            #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
             except:
                 print(f'No student is found for id={id_input[0]}')
             try:
@@ -82,11 +82,12 @@ def add_points(students_list, students_data):
                         students_data[new_id][1][index] += points[index]
                     print('Points updated')
                     continue
-  #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
+            #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
             except:
                 print('Incorrect points format')
 
-def find_student(students_data):   #  students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
+
+def find_student(students_data):  # students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
     print("Enter an id or 'back' to return")
     while True:
         student_id = input()
@@ -94,7 +95,8 @@ def find_student(students_data):   #  students_data = {new_id: [[first_name + la
             return
         try:
             id = int(student_id)
-            print(f'{id} points: Python={students_data[id][1][0]}; DSA={students_data[id][1][1]}; Databases={students_data[id][1][2]}; Flask={students_data[id][1][3]}')
+            print(
+                f'{id} points: Python={students_data[id][1][0]}; DSA={students_data[id][1][1]}; Databases={students_data[id][1][2]}; Flask={students_data[id][1][3]}')
         except:
             print(f'No student is found for id={student_id}')
 
@@ -110,13 +112,13 @@ def list_print(students):
 
 def course_check(students_data):
     max_points = {'python': 600, 'DSA': 400, 'databases': 480, 'flask': 550}
-    course_list = ['python', 'DSA', 'databases', 'flask']
+    course_list = ['python', 'dsa', 'databases', 'flask']
 
     print('Type the name of a course to see details or \'back\' to quit')
     general_stat(students_data)
 
     while True:
-        user_input = input()
+        user_input = input().lower()
         if user_input == "back":
             return
         elif user_input not in course_list:
@@ -124,13 +126,13 @@ def course_check(students_data):
         else:
             course_name = user_input.capitalize()
             print(f"{course_name}")
-            print("ID    Points    Completion")
+            print("id    points    completed")
             student_stats = []
             for student_id, data in students_data.items():
                 points = data[1]
                 if user_input == 'python':
                     course_index = 0
-                elif user_input == 'DSA':
+                elif user_input == 'dsa':
                     course_index = 1
                 elif user_input == 'databases':
                     course_index = 2
@@ -138,7 +140,7 @@ def course_check(students_data):
                     course_index = 3
 
                 course_points = points[course_index]
-                if course_points > 0:                    
+                if course_points > 0:
                     completion = (course_points / max_points[user_input]) * 100
                     student_stats.append((student_id, course_points, completion))
             student_stats.sort(key=lambda x: x[1], reverse=True)
@@ -156,37 +158,46 @@ def general_stat(students_data):
         points = data[1]
         for course_index, point in enumerate(points):
             course_name = course_names[course_index]
-            course_sums[course_name] += point
+            course_sums[course_name] += 1
             if point > 0:
-                course_submissions[course_name] += 1
+                course_submissions[course_name] += point
                 course_counts[course_name] += 1
 
-    most_popular = max(course_submissions, key=course_submissions.get)
-    least_popular = min(course_submissions, key=course_submissions.get)
-    highest_activity = max(course_sums, key=course_sums.get)
-    lowest_activity = min(course_sums, key=course_sums.get)
-    easiest_course = max(course_counts, key=lambda x: course_sums[x] / course_counts[x] if course_counts[x] > 0 else float('-inf'))
-    hardest_course = min(course_counts, key=lambda x: course_sums[x] / course_counts[x] if course_counts[x] > 0 else float('inf'))
+    most_popular = max(course_sums, key=course_sums.get)
+    least_popular = min(course_sums, key=course_sums.get)
+    highest_activity = max(course_submissions, key=course_submissions.get)
+    lowest_activity = min(course_submissions, key=course_submissions.get)
+    easiest_course = max(course_counts,
+                         key=lambda x: course_sums[x] / course_counts[x] if course_counts[x] > 0 else float('-inf'))
+    hardest_course = min(course_counts,
+                         key=lambda x: course_sums[x] / course_counts[x] if course_counts[x] > 0 else float('inf'))
 
     max_sum = max(course_sums.values())
     min_sum = min(course_sums.values())
     most_popular = [course for course, total in course_sums.items() if total == max_sum]
     least_popular = [course for course, total in course_sums.items() if total == min_sum]
-    
+
     max_activity = max(course_submissions.values())
     min_activity = min(course_submissions.values())
     highest_activity = [course for course, activity in course_submissions.items() if activity == max_activity]
     lowest_activity = [course for course, activity in course_submissions.items() if activity == min_activity]
 
-    max_average = max(course_sums[course] / course_counts[course] if course_counts[course] > 0 else float('-inf') for course in course_counts)
-    min_average = min(course_sums[course] / course_counts[course] if course_counts[course] > 0 else float('inf') for course in course_counts)
-    easiest_course = [course for course in course_counts if course_counts[course] > 0 and course_sums[course] / course_counts[course] == max_average]
-    hardest_course = [course for course in course_counts if course_counts[course] > 0 and course_sums[course] / course_counts[course] == min_average]
-    
+    max_average = max(
+        course_sums[course] / course_counts[course] if course_counts[course] > 0 else float('-inf') for course in
+        course_counts)
+    min_average = min(
+        course_sums[course] / course_counts[course] if course_counts[course] > 0 else float('inf') for course in
+        course_counts)
+    easiest_course = [course for course in course_counts if
+                      course_counts[course] > 0 and course_sums[course] / course_counts[course] == max_average]
+    hardest_course = [course for course in course_counts if
+                      course_counts[course] > 0 and course_sums[course] / course_counts[course] == min_average]
+
     print(f"Most popular: {', '.join(most_popular) if most_popular and max_sum > 0 else 'n/a'}")
     print(f"Least popular: {', '.join(least_popular) if least_popular and min_sum < max_sum else 'n/a'}")
     print(f"Highest activity: {', '.join(highest_activity) if highest_activity and max_activity > 0 else 'n/a'}")
-    print(f"Lowest activity: {', '.join(lowest_activity) if lowest_activity and min_activity < max_activity else 'n/a'}")
+    print(
+        f"Lowest activity: {', '.join(lowest_activity) if lowest_activity and min_activity < max_activity else 'n/a'}")
     print(f"Easiest course: {', '.join(easiest_course) if easiest_course and max_average > float('-inf') else 'n/a'}")
     print(f"Hardest course: {', '.join(hardest_course) if hardest_course and min_average < float('inf') else 'n/a'}")
 
