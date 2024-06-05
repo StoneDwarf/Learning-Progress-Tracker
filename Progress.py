@@ -182,24 +182,25 @@ def general_stat(students_data):
     highest_activity = [course for course, activity in course_submissions.items() if activity == max_activity]
     lowest_activity = [course for course, activity in course_submissions.items() if activity == min_activity]
 
-    max_average = max(
-        course_sums[course] / course_counts[course] if course_counts[course] > 0 else float('-inf') for course in
-        course_counts)
-    min_average = min(
-        course_sums[course] / course_counts[course] if course_counts[course] > 0 else float('inf') for course in
-        course_counts)
-    easiest_course = [course for course in course_counts if
-                      course_counts[course] > 0 and course_sums[course] / course_counts[course] == max_average]
-    hardest_course = [course for course in course_counts if
-                      course_counts[course] > 0 and course_sums[course] / course_counts[course] == min_average]
+    valid_courses = {course: course_sums[course] / course_counts[course]
+                     for course in course_counts if course_counts[course] > 0}
+
+    if valid_courses:
+        max_average = max(valid_courses.values())
+        min_average = min(valid_courses.values())
+        easiest_course = [course for course, avg in valid_courses.items() if avg == max_average]
+        hardest_course = [course for course, avg in valid_courses.items() if avg == min_average]
+    else:
+        easiest_course = []
+        hardest_course = []
 
     print(f"Most popular: {', '.join(most_popular) if most_popular and max_sum > 0 else 'n/a'}")
     print(f"Least popular: {', '.join(least_popular) if least_popular and min_sum < max_sum else 'n/a'}")
     print(f"Highest activity: {', '.join(highest_activity) if highest_activity and max_activity > 0 else 'n/a'}")
     print(
         f"Lowest activity: {', '.join(lowest_activity) if lowest_activity and min_activity < max_activity else 'n/a'}")
-    print(f"Easiest course: {', '.join(easiest_course) if easiest_course and max_average > float('-inf') else 'n/a'}")
-    print(f"Hardest course: {', '.join(hardest_course) if hardest_course and min_average < float('inf') else 'n/a'}")
+    print(f"Easiest course: {', '.join(easiest_course) if easiest_course else 'n/a'}")
+    print(f"Hardest course: {', '.join(hardest_course) if hardest_course else 'n/a'}")
 
 
 students_data = {}
