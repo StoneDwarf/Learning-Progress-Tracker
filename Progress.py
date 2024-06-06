@@ -112,8 +112,9 @@ def list_print(students):
 
 
 def course_check(students_data):
-    max_points = {'python': 600, 'DSA': 400, 'databases': 480, 'flask': 550}
+    max_points = {'python': 600, 'dsa': 400, 'databases': 480, 'flask': 550}
     course_list = ['python', 'dsa', 'databases', 'flask']
+    course_print = ['Python', 'DSA', 'Databases', 'Flask']
 
     print('Type the name of a course to see details or \'back\' to quit')
     general_stat(students_data)
@@ -125,26 +126,18 @@ def course_check(students_data):
         elif user_input not in course_list:
             print('Unknown course')
         else:
-            course_name = user_input.capitalize()
-            print(f"{course_name}")
-            print("id    points    completed")
+            course_index = course_list.index(user_input)
             student_stats = []
             for student_id, data in students_data.items():
                 points = data[1]
-                if user_input == 'python':
-                    course_index = 0
-                elif user_input == 'dsa':
-                    course_index = 1
-                elif user_input == 'databases':
-                    course_index = 2
-                elif user_input == 'flask':
-                    course_index = 3
-
                 course_points = points[course_index]
                 if course_points > 0:
                     completion = (course_points / max_points[user_input]) * 100
                     student_stats.append((student_id, course_points, completion))
             student_stats.sort(key=lambda x: x[1], reverse=True)
+
+            print(f"{course_print[course_index]}")
+            print("id    points    completed")
             for student_id, course_points, completion in student_stats:
                 print(f"{student_id}    {course_points}    {completion:.1f}%")
 
@@ -159,9 +152,9 @@ def general_stat(students_data):
         points = data[1]
         for course_index, point in enumerate(points):
             course_name = course_names[course_index]
-            course_sums[course_name] += point
+            course_sums[course_name] += 1
             if point > 0:
-                course_submissions[course_name] += 1
+                course_submissions[course_name] += point
                 course_counts[course_name] += 1
 
     max_sum = max(course_sums.values())
@@ -169,10 +162,10 @@ def general_stat(students_data):
     most_popular = [course for course, total in course_sums.items() if total == max_sum]
     least_popular = [course for course, total in course_sums.items() if total == min_sum]
 
-    max_activity = max(course_submissions.values())
-    min_activity = min(course_submissions.values())
-    highest_activity = [course for course, activity in course_submissions.items() if activity == max_activity]
-    lowest_activity = [course for course, activity in course_submissions.items() if activity == min_activity]
+    max_activity = max(course_sums.values())
+    min_activity = min(course_sums.values())
+    highest_activity = [course for course, activity in course_sums.items() if activity == max_activity]
+    lowest_activity = [course for course, activity in course_sums.items() if activity == min_activity]
 
     valid_courses = {course: course_submissions[course] / course_counts[course]
                      for course in course_counts if course_counts[course] > 0}
@@ -185,6 +178,9 @@ def general_stat(students_data):
     else:
         easiest_course = []
         hardest_course = []
+
+    # print(f'course_sums = {course_sums} \n course_submissions = {course_submissions} \n course_counts = {course_counts} \n valid_courses = {valid_courses} ')
+
 
     print(f"Most popular: {', '.join(most_popular) if most_popular and max_sum > 0 else 'n/a'}")
     print(f"Least popular: {', '.join(least_popular) if least_popular and min_sum < max_sum else 'n/a'}")
