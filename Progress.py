@@ -96,7 +96,8 @@ def find_student(students_data):  # students_data = {new_id: [[first_name + last
         try:
             id = int(student_id)
             print(
-                f'{id} points: Python={students_data[id][1][0]}; DSA={students_data[id][1][1]}; Databases={students_data[id][1][2]}; Flask={students_data[id][1][3]}')
+                f'{id} points: Python={students_data[id][1][0]}; \
+                DSA={students_data[id][1][1]}; Databases={students_data[id][1][2]}; Flask={students_data[id][1][3]}')
         except:
             print(f'No student is found for id={student_id}')
 
@@ -158,19 +159,10 @@ def general_stat(students_data):
         points = data[1]
         for course_index, point in enumerate(points):
             course_name = course_names[course_index]
-            course_sums[course_name] += 1
+            course_sums[course_name] += point
             if point > 0:
-                course_submissions[course_name] += point
+                course_submissions[course_name] += 1
                 course_counts[course_name] += 1
-
-    most_popular = max(course_sums, key=course_sums.get)
-    least_popular = min(course_sums, key=course_sums.get)
-    highest_activity = max(course_submissions, key=course_submissions.get)
-    lowest_activity = min(course_submissions, key=course_submissions.get)
-    easiest_course = max(course_counts,
-                         key=lambda x: course_sums[x] / course_counts[x] if course_counts[x] > 0 else float('-inf'))
-    hardest_course = min(course_counts,
-                         key=lambda x: course_sums[x] / course_counts[x] if course_counts[x] > 0 else float('inf'))
 
     max_sum = max(course_sums.values())
     min_sum = min(course_sums.values())
