@@ -179,9 +179,6 @@ def general_stat(students_data):
         easiest_course = []
         hardest_course = []
 
-    # print(f'course_sums = {course_sums} \n course_submissions = {course_submissions} \n course_counts = {course_counts} \n valid_courses = {valid_courses} ')
-
-
     print(f"Most popular: {', '.join(most_popular) if most_popular and max_sum > 0 else 'n/a'}")
     print(f"Least popular: {', '.join(least_popular) if least_popular and min_sum < max_sum else 'n/a'}")
     print(f"Highest activity: {', '.join(highest_activity) if highest_activity and max_activity > 0 else 'n/a'}")
@@ -190,6 +187,17 @@ def general_stat(students_data):
     print(f"Easiest course: {', '.join(easiest_course) if easiest_course else 'n/a'}")
     print(f"Hardest course: {', '.join(hardest_course) if hardest_course else 'n/a'}")
 
+
+def notify(students_data):
+    # students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
+    check_list = [600,400,480,550]
+    course_names = ['Python', 'DSA', 'Databases', 'Flask']
+    for student_id, data in students_data.items():
+        for course_index, point in enumerate(data):
+            if point == check_list[course_index]:
+                print(f'''To: {student_id[0][1]}
+Re: Your Learning Progress
+Hello, {student_id[0][0]}! You have accomplished our {course_names[course_index]} course!''')
 
 students_data = {}
 students_list = [0]
@@ -213,5 +221,7 @@ while True:
         find_student(students_data)
     elif user_input == 'statistics':
         course_check(students_data)
+    elif user_input == 'notify':
+        notify(students_data)
     else:
         print('Unknown command!')
