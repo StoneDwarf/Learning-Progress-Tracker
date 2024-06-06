@@ -182,7 +182,7 @@ def general_stat(students_data):
     highest_activity = [course for course, activity in course_submissions.items() if activity == max_activity]
     lowest_activity = [course for course, activity in course_submissions.items() if activity == min_activity]
 
-    valid_courses = {course: course_sums[course] / course_counts[course]
+    valid_courses = {course: course_submissions[course] / course_counts[course]
                      for course in course_counts if course_counts[course] > 0}
 
     if valid_courses:
