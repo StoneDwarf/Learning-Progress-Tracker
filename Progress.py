@@ -31,7 +31,7 @@ def name_check(name, the_list, students_list, students_data):
         the_list.append(name)
         new_id = students_list[-1] + 1
         students_list.append(new_id)
-        students_data[new_id] = [[first_name + ' ' + last_name, email], [0, 0, 0, 0]]
+        students_data[new_id] = [[first_name + ' ' + last_name, email], [0, 0, 0, 0],[]]
         print("The student has been added.")
     return the_list, students_list, students_data
 
@@ -189,20 +189,23 @@ def general_stat(students_data):
 
 
 def notify(students_data):
-    # students_data = {new_id: [[first_name + last_name, email], [0,0,0,0]]}
+    # students_data = {new_id: [[first_name + last_name, email], [0,0,0,0], []]}
     check_list = [600,400,480,550]
     course_names = ['Python', 'DSA', 'Databases', 'Flask']
     students = {}
     for student_id, data in students_data.items():
         name = data[0]
         points = data[1]
+        course_check = data[2]
         for course_index, point in enumerate(points):
-            if point == check_list[course_index]:
+            if point == check_list[course_index] and course_names[course_index] not in course_check:
                 students[name[1]] = course_names[course_index]
+                students_data[student_id][2].append(course_names[course_index])
                 print(f'To: {name[1]}')
                 print('Re: Your Learning Progress')
                 print(f'Hello, {name[0]}! You have accomplished our {course_names[course_index]} course!')
     print(f'Total {len(students)} students have been notified.')
+    return students_data
 
 
 students_data = {}
